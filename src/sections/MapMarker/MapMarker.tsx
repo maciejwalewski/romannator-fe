@@ -16,7 +16,7 @@ export const MapMarker = ({ data }: Props) => {
   return (
     <>
       {data.publications.map((pub) => (
-        <Marker key={pub.latitude} latitude={Number(pub.latitude)} longitude={Number(pub.longitude)}>
+        <Marker key={pub.id} latitude={Number(pub.latitude)} longitude={Number(pub.longitude)}>
           <StarTwoTone className={s.starIcon} spin />
           <Card className={s.infoCard} title={`${pub.firstName}'s publication`}>
             <p>Name: {pub.firstName}</p>

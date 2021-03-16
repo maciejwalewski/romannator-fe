@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import s from './map.module.scss';
 import ReactMapGL, { GeolocateControl, MapEvent, NavigationControl, ViewportProps } from 'react-map-gl';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { AddPublicationInput, CreatePublicationPopup } from './CreatePublicationPopup';
 import { ADD_PUBLICATION_MUTATION } from 'apollo/mutations';
 import { GET_PUBLICATIONS_QUERY } from 'apollo/queries';
@@ -9,15 +9,14 @@ import { PublicationsData } from 'apollo/types';
 import { MapMarker } from './MapMarker/MapMarker';
 
 export const Map = () => {
-  const [getPublications, { data, loading, error }] = useLazyQuery<PublicationsData>(GET_PUBLICATIONS_QUERY);
-  const [addPublication] = useMutation(ADD_PUBLICATION_MUTATION);
+  const { data, loading, error } = useQuery<PublicationsData>(GET_PUBLICATIONS_QUERY, { pollInterval: 2500 });
+  const [addPublication] = useMutation(ADD_PUBLICATION_MUTATION, {
+    refetchQueries: [{ query: GET_PUBLICATIONS_QUERY }],
+  });
 
   useEffect(() => {
-    getPublications();
-  }, []);
-  useEffect(() => {
-    console.log('publications', data);
-  }, [data]);
+    console.log('loading', loading);
+  }, [loading]);
 
   const [viewport, setViewport] = React.useState<ViewportProps>({
     longitude: -122.4376,
@@ -29,7 +28,6 @@ export const Map = () => {
 
   const onMouseDown = (event: MapEvent) => {
     if (event.rightButton) {
-      console.log('event', event);
       setViewport({
         ...viewport,
         longitude: event.lngLat[0],
