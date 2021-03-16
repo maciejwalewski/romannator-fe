@@ -1,0 +1,15 @@
+.infoCard {
+  width: 300px;
+  display: none;
+}
+
+.starIcon {
+  transform: scale(2);
+  cursor: pointer;
+
+  &:hover {
+    + .infoCard {
+      display: block;
+    }
+  }
+}

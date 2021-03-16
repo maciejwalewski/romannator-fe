@@ -1,41 +1,22 @@
 import React, { useEffect } from 'react';
 import s from './map.module.scss';
-import ReactMapGL, { GeolocateControl, MapEvent, NavigationControl, Popup, ViewportProps } from 'react-map-gl';
-import { useLazyQuery, gql, useMutation } from '@apollo/client';
+import ReactMapGL, { GeolocateControl, MapEvent, NavigationControl, ViewportProps } from 'react-map-gl';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { AddPublicationInput, CreatePublicationPopup } from './CreatePublicationPopup';
+import { ADD_PUBLICATION_MUTATION } from 'apollo/mutations';
+import { GET_PUBLICATIONS_QUERY } from 'apollo/queries';
+import { PublicationsData } from 'apollo/types';
+import { MapMarker } from './MapMarker/MapMarker';
 
 export const Map = () => {
-  const [getCity, { data, loading, error }] = useLazyQuery(gql`
-    query {
-      publications {
-        id
-        firstName
-        description
-        coordinates
-      }
-    }
-  `);
-
-  const [addPublication] = useMutation(gql`
-    mutation AddPublication($firstName: String!, $description: String!, $longitude: String!, $latitude: String!) {
-      addPublication(
-        addPublicationData: {
-          firstName: $firstName
-          description: $description
-          longitude: $longitude
-          latitude: $latitude
-        }
-      ) {
-        firstName
-        description
-        longitude
-        latitude
-      }
-    }
-  `);
+  const [getPublications, { data, loading, error }] = useLazyQuery<PublicationsData>(GET_PUBLICATIONS_QUERY);
+  const [addPublication] = useMutation(ADD_PUBLICATION_MUTATION);
 
   useEffect(() => {
-    console.log('data', data);
+    getPublications();
+  }, []);
+  useEffect(() => {
+    console.log('publications', data);
   }, [data]);
 
   const [viewport, setViewport] = React.useState<ViewportProps>({
@@ -44,7 +25,7 @@ export const Map = () => {
     zoom: 8,
   });
 
-  const [isPopupVisible, togglePopup] = React.useState<boolean>(false);
+  const [isAddPublicationVisible, toggleAddPopup] = React.useState<boolean>(false);
 
   const onMouseDown = (event: MapEvent) => {
     if (event.rightButton) {
@@ -54,7 +35,7 @@ export const Map = () => {
         longitude: event.lngLat[0],
         latitude: event.lngLat[1],
       });
-      togglePopup(true);
+      toggleAddPopup(true);
     }
   };
 
@@ -80,14 +61,15 @@ export const Map = () => {
         trackUserLocation={true}
         auto
       />
-      {isPopupVisible && (
+      {isAddPublicationVisible && (
         <CreatePublicationPopup
           latitude={viewport.latitude || 0}
           longitude={viewport.longitude || 0}
-          onClose={() => togglePopup(false)}
+          onClose={() => toggleAddPopup(false)}
           onSubmit={onSubmit}
         />
       )}
+      <MapMarker data={data} />
       <NavigationControl style={{ left: 10, top: 10 }} />
     </ReactMapGL>
   );

@@ -2,9 +2,10 @@ import React from 'react';
 import { Popup, PopupProps } from 'react-map-gl';
 import { Button, Col, Form, Input, Row } from 'antd';
 import s from './createPublicationPopup.module.scss';
+import { Publication } from 'apollo/types';
 
 type Props = {
-  onSubmit: (values: any) => void;
+  onSubmit: (values: Publication) => void;
 };
 
 export type AddPublicationInput = {
