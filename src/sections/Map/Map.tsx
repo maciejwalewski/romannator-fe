@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './map.module.scss';
 import ReactMapGL, { GeolocateControl, MapEvent, NavigationControl, ViewportProps } from 'react-map-gl';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { AddPublicationInput, CreatePublicationPopup } from './CreatePublicationPopup';
+import { AddPublicationInput, CreatePublicationPopup } from 'sections/CreatePublicationPopup/CreatePublicationPopup';
 import { ADD_PUBLICATION_MUTATION } from 'apollo/mutations';
 import { GET_PUBLICATIONS_QUERY } from 'apollo/queries';
 import { PublicationsData } from 'apollo/types';
-import { MapMarker } from './MapMarker/MapMarker';
+import { MapMarker } from 'sections/MapMarker/MapMarker';
+import { Login } from 'sections/Login/Login';
 
 export const Map = () => {
   const { data, loading, error } = useQuery<PublicationsData>(GET_PUBLICATIONS_QUERY, { pollInterval: 2500 });
@@ -14,17 +15,13 @@ export const Map = () => {
     refetchQueries: [{ query: GET_PUBLICATIONS_QUERY }],
   });
 
-  useEffect(() => {
-    console.log('loading', loading);
-  }, [loading]);
-
-  const [viewport, setViewport] = React.useState<ViewportProps>({
+  const [viewport, setViewport] = useState<ViewportProps>({
     longitude: -122.4376,
     latitude: 37.7577,
     zoom: 8,
   });
 
-  const [isAddPublicationVisible, toggleAddPopup] = React.useState<boolean>(false);
+  const [isAddPublicationVisible, toggleAddPopup] = useState<boolean>(false);
 
   const onMouseDown = (event: MapEvent) => {
     if (event.rightButton) {
@@ -41,7 +38,6 @@ export const Map = () => {
     const { firstName, description } = values;
     const { latitude, longitude } = viewport;
 
-    console.log('firstName', firstName);
     addPublication({ variables: { firstName, description, latitude: String(latitude), longitude: String(longitude) } });
   };
 
@@ -69,6 +65,7 @@ export const Map = () => {
       )}
       <MapMarker data={data} />
       <NavigationControl style={{ left: 10, top: 10 }} />
+      <Login />
     </ReactMapGL>
   );
 };

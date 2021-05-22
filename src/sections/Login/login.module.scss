@@ -1,0 +1,21 @@
+.wrapper {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.avatarImage {
+  width: 30px;
+  border-radius: 30px;
+}
+
+.logoutWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logoutText {
+  font-weight: bold;
+  padding-right: 8px;
+}

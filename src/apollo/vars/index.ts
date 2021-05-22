@@ -1,0 +1,1 @@
+export { userDataVar } from './user';
