@@ -1,0 +1,22 @@
+.chatButton {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+}
+
+.chatBox {
+  position: fixed;
+  right: 30px;
+  bottom: 140px;
+  height: 70%;
+  width: 350px;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.chatBoxClosed {
+  height: 0%;
+  opacity: 0;
+}
