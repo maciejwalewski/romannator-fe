@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import s from './map.module.scss';
 import ReactMapGL, { GeolocateControl, MapEvent, NavigationControl, ViewportProps } from 'react-map-gl';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { AddPublicationInput, CreatePublicationPopup } from 'sections/CreatePublicationPopup/CreatePublicationPopup';
 import { ADD_PUBLICATION_MUTATION } from 'apollo/mutations';
 import { GET_PUBLICATIONS_QUERY } from 'apollo/queries';
-import { PublicationsData } from 'apollo/types';
-import { MapMarker } from 'sections/MapMarker/MapMarker';
+// import { PublicationsData } from 'apollo/types';
+// import { MapMarker } from 'sections/MapMarker/MapMarker';
 import { Login } from 'sections/Login/Login';
 
 export const Map = () => {
