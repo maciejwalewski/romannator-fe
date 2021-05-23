@@ -8,7 +8,6 @@ import { useReactiveVar } from '@apollo/client';
 
 export const Login = () => {
   const onSuccess = (info: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    console.log('success info', info);
     userDataVar(info as GoogleLoginResponse);
   };
 
@@ -21,8 +20,6 @@ export const Login = () => {
   };
 
   const userData = useReactiveVar(userDataVar);
-
-  console.log('userData', userData);
 
   return (
     <div className={s.wrapper}>

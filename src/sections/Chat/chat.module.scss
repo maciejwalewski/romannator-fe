@@ -1,3 +1,9 @@
+.chatWrapper {
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
 .chatButton {
   position: fixed;
   bottom: 100px;
@@ -6,17 +12,39 @@
 
 .chatBox {
   position: fixed;
-  right: 30px;
+  right: 0;
   bottom: 140px;
   height: 70%;
-  width: 350px;
   opacity: 1;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
   border-radius: 12px;
+  width: 100%;
+
+  @media (min-width: 700px) {
+    width: 350px;
+    right: 30px;
+  }
+}
+
+.chatBoxContentWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .chatBoxClosed {
   height: 0%;
   opacity: 0;
+}
+
+.messagesBoxInverted {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 100%;
+  overflow: scroll;
+}
+
+.messagesBox {
 }
